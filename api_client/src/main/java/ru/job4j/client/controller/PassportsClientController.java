@@ -15,15 +15,13 @@ import java.util.List;
 @RestController
 public class PassportsClientController {
     private final RestTemplate rest;
-    @Value("${passport.api.findAll}")
-    private String findAllApi;
-    @Value("${passport.api.find.by.sn}")
-    private String findBySNApi;
+    @Value("${passport.api.find}")
+    private String findApi;
     @Value("${passport.api.save}")
     private String saveApi;
     @Value("${passport.api.update}")
     private String updateApi;
-    @Value("${passport.api.delete.by.sn}")
+    @Value("${passport.api.delete}")
     private String deleteApi;
     @Value("${passport.api.unavailable}")
     private String unavailableApi;
@@ -49,22 +47,30 @@ public class PassportsClientController {
                 HttpMethod.PATCH, request, Passport.class);
     }
 
-    @DeleteMapping("/delete/{serialNumber}")
-    public ResponseEntity<Passport> delete(@PathVariable String serialNumber) {
-        return rest.exchange(deleteApi + serialNumber,
-                HttpMethod.DELETE, null, Passport.class, serialNumber);
+    @DeleteMapping("/delete/{series}/{number}")
+    public ResponseEntity<Passport> delete(@PathVariable String series,
+                                           @PathVariable String number) {
+        return rest.exchange(deleteApi + series + "/" + number,
+                HttpMethod.DELETE, null, Passport.class, series, number);
     }
 
     @GetMapping("/find")
-    public ResponseEntity<List<Passport>> findAll() {
-        return rest.exchange(findAllApi,
+    public ResponseEntity<List<Passport>> find() {
+        return rest.exchange(findApi,
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Passport>>() {});
     }
 
-    @GetMapping("/find/{serialNumber}")
-    public ResponseEntity<Passport> find(@PathVariable String serialNumber) {
-        return rest.exchange(findBySNApi + serialNumber,
-                HttpMethod.GET, null, Passport.class, serialNumber);
+    @GetMapping("/find/{series}")
+    public ResponseEntity<List<Passport>> find(@PathVariable String series) {
+        return rest.exchange(findApi + "/" + series,
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Passport>>() {}, series);
+    }
+
+    @GetMapping("/find/{series}/{number}")
+    public ResponseEntity<Passport> find(@PathVariable String series,
+                                         @PathVariable String number) {
+        return rest.exchange(findApi + "/" + series + "/" + number,
+                HttpMethod.GET, null, Passport.class, series, number);
     }
 
     @GetMapping("/unavailable")

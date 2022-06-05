@@ -4,6 +4,10 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 @Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"series", "number"}),
+        @UniqueConstraint(columnNames = "number")
+})
 public class Passport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,8 +15,8 @@ public class Passport {
     private String name;
     private String lastname;
     private Timestamp birthday;
-    @Column(name = "serial_number")
-    private String serialNumber;
+    private String series;
+    private String number;
     @Column(name = "expiration_date")
     private Timestamp expirationDate;
     private String citizenship;
@@ -20,14 +24,16 @@ public class Passport {
     public static Passport build(String name,
                                  String lastname,
                                  Timestamp birthday,
-                                 String serialNumber,
+                                 String series,
+                                 String number,
                                  Timestamp expirationDate,
                                  String citizenship) {
         Passport passport = new Passport();
         passport.name = name;
         passport.lastname = lastname;
         passport.birthday = birthday;
-        passport.serialNumber = serialNumber;
+        passport.series = series;
+        passport.number = number;
         passport.expirationDate = expirationDate;
         passport.citizenship = citizenship;
         return passport;
@@ -57,12 +63,20 @@ public class Passport {
         this.birthday = birthday;
     }
 
-    public String getSerialNumber() {
-        return serialNumber;
+    public String getSeries() {
+        return series;
     }
 
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
+    public void setSeries(String series) {
+        this.series = series;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     public Timestamp getExpirationDate() {
@@ -90,11 +104,11 @@ public class Passport {
             return false;
         }
         Passport passport = (Passport) o;
-        return id == passport.id && Objects.equals(serialNumber, passport.serialNumber);
+        return Objects.equals(birthday, passport.birthday) && Objects.equals(series, passport.series) && Objects.equals(number, passport.number);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, serialNumber);
+        return Objects.hash(birthday, series, number);
     }
 }
