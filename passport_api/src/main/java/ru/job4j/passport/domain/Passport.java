@@ -21,13 +21,16 @@ public class Passport {
     private Timestamp expirationDate;
     private String citizenship;
 
+    private String email;
+
     public static Passport build(String name,
                                  String lastname,
                                  Timestamp birthday,
                                  String series,
                                  String number,
                                  Timestamp expirationDate,
-                                 String citizenship) {
+                                 String citizenship,
+                                 String email) {
         Passport passport = new Passport();
         passport.name = name;
         passport.lastname = lastname;
@@ -36,6 +39,7 @@ public class Passport {
         passport.number = number;
         passport.expirationDate = expirationDate;
         passport.citizenship = citizenship;
+        passport.email = email;
         return passport;
     }
 
@@ -93,6 +97,22 @@ public class Passport {
 
     public void setCitizenship(String citizenship) {
         this.citizenship = citizenship;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

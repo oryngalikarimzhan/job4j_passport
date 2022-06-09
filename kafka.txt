@@ -1,2 +1,3 @@
 bin/kafka-server-start.sh config/server.properties
 bin/zookeeper-server-start.sh config/zookeeper.properties
+bin/kafka-console-consumer.sh --topic unavailable --from-beginning --bootstrap-server localhost:9092

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.job4j.passport.controller.PassportsController;
@@ -23,7 +24,6 @@ import java.util.List;
 public class PassportService {
     private static final Logger LOGGER = LoggerFactory.getLogger(PassportsController.class.getSimpleName());
     private final ObjectMapper objectMapper;
-
     private final PassportRepository repository;
 
     public PassportService(ObjectMapper objectMapper, PassportRepository repository) {
